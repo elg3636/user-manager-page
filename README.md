@@ -22,7 +22,7 @@ To get started with the project locally:
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/user-manager-page.git
+    git clone https://github.com/elg3636/user-manager-page.git
     ```
 
 2. Navigate to the project directory:
