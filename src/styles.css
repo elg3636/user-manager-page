@@ -1,0 +1,4 @@
+/* Apply dark grey color to all cells in deactivated rows */
+.deactivated-row .MuiDataGrid-cell {
+    color: #757575 !important;  /* Darker grey color for all cells in deactivated rows */
+}
