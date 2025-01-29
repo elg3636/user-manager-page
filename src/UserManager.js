@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid"; // Importing Material UI's DataGrid component for displaying the table
-import { Button, TextField, Box, Menu, MenuItem, IconButton, Chip } from "@mui/material"; // Importing various Material UI components
+import { Button, TextField, Box, Menu, MenuItem, IconButton, Chip, Typography } from "@mui/material"; // Importing various Material UI components
 import MoreVertIcon from '@mui/icons-material/MoreVert'; // Importing the "more" vertical icon for the actions menu
 import './styles.css'; // Import the custom CSS for row styling
 
@@ -49,12 +49,12 @@ const UserManager = () => {
 
       // Columns configuration for DataGrid, including custom rendering for "status" and "action"
       const columns = [
-        { field: "user", headerName: "User", width: 200 },
-        { field: "email", headerName: "Email", width: 250 },
+        { field: "user", headerName: "User", flex: 1 },
+        { field: "email", headerName: "Email", flex: 1 },
         { 
             field: "status", 
             headerName: "Account Status", 
-            width: 200,
+            flex: 1,
             renderCell: (params) => { //Custom render for the status column
                 // Check if the user is deactivated and change text color to dark grey
                 const textColor = params.row.status === "Deactivated" ? "#757575" : "#000000"; // Dark grey for deactivated users, black for active
@@ -73,7 +73,7 @@ const UserManager = () => {
         { 
             field: "clients",
             headerName: "Clients",
-            width: 400,
+            flex: 1,
             renderCell: (params) => {  // Custom render for the clients column
                 const clients = params.value.split(", ");  // Split client names by comma and space
                 const displayedClients = clients.slice(0, 3);  // Get the first 3 clients
@@ -110,7 +110,7 @@ const UserManager = () => {
                 );
             }
         },
-        { field: "role", headerName: "Role", width: 150 },
+        { field: "role", headerName: "Role", flex: 1 },
         {
           field: "action", //Action column with menu options
           headerName: "Action",
@@ -156,56 +156,103 @@ const UserManager = () => {
     });
     
     return (
-        <Box sx={{ maxWidth: "100%", padding: 3}}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-                <TextField
-                    label="Search"
-                    variant="outlined"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    sx={{ 
-                        width: "300px",
-                        '& .MuiInputBase-input::placeholder': {
-                        color: '#757575', // Dark grey placeholder text
-                        }    
-                    }}
-                    placeholder="Name, email, etc..." // Set the placeholder text
-                />
-            <Box>
-              <Button variant="contained" color="secondary" sx={{ marginRight: 2 }}>
-                Bulk
-              </Button>
-              <Button variant="contained" color="primary">
-                Invite User
-              </Button>
-            </Box>
-          </Box>
+        <Box sx={{ 
+            display: "flex",
+            justifyContent: "center", 
+            alignItems: "flex-start", 
+            minHeight: "100vh",
+            padding: "20px",
+            boxSizing: "border-box",
+            backgroundColor: "#FAFAFA",
+        }}>
+            
+            <Box sx={{ 
+                width: {xs:"90%", sm: "75%", md:"75%"}, 
+                padding: "20px", 
+                boxSizing:"border-box",
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
+                justifyContent: "space-between",
+                height: "100%",
+                backgroundColor: "#FAFAFA",
+            }}>
+                <Typography variant ="h4" sx={{ marginBottom: 2, padding: "10px"}}>
+                    Manage Users
+                </Typography>
 
-          {/* DataGrid to display the users with filtered data */}
-          <box sx={{ height: 600, width: "100%" }}>
-            <DataGrid
-              rows={filteredUsers}
-              columns={columns}
-              pageSize={5}
-              checkboxSelection
-              onSelectionModelChange={(newSelection) => setSelectedUsers(newSelection)}
-              getRowClassName={(params) => 
-                params.row.status === "Deactivated" ? "deactivated-row" : "" // Apply a class to rows with Deactivated status
-            }
-            />
-          </box>
-          {/* Action menu */}
-          <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-      >
-        <MenuItem onClick={() => handleActionClick('Edit profile')}>Edit Profile</MenuItem>
-        <MenuItem onClick={() => handleActionClick('Permissions')}>Permissions</MenuItem>
-        <MenuItem onClick={() => handleActionClick('Deactivate')}>Deactivate</MenuItem>
-      </Menu>
+                <Box sx={{ 
+                    display: "flex", 
+                    flexDirection: "column", 
+                    gap: 3, 
+                    backgroundColor: "#FFFFFF",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", 
+                    flexGrow: 1,
+                }}>
+
+                    <Box sx={{ boxSizing: "border-box",display: "flex",gap: 3, backgroundColor: "#FFFFFF",alignItems: "center", paddingBottom: "20px", marginTop: "20px", marginLeft: "20px",}}>
+                        <TextField
+                            label="Search"
+                            variant="outlined"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            sx={{ 
+                                width: "300px",
+                                '& .MuiInputBase-input::placeholder': {
+                                color: '#757575', // Dark grey placeholder text
+                            }    
+                        }}
+                        placeholder="Name, email, etc..." // Set the placeholder text
+                    />
+                    <Box sx={{ marginLeft: "auto" }}>
+                        <Button 
+                            variant="outlined" 
+                            sx={{ borderColor: 'black',
+                                backgroundColor: '##FFFFFF', 
+                                color: 'black', 
+                                marginRight: 2 
+                            }}>
+                            Bulk
+                        </Button>
+                        <Button variant="contained" sx={{ backgroundColor: '#EAE9CB', color: 'black', marginRight: 2 }}>
+                            Invite User
+                        </Button>
+                    </Box>
+                </Box>
+                {/* DataGrid to display the users with filtered data */}
+                <Box sx={{ height: "calc(100vh - 320px)", overflow: "auto", width: "100%", marginTop: "auto",}}>
+                    <DataGrid
+                        rows={filteredUsers}
+                        columns={columns}
+                        pageSize={5}
+                        checkboxSelection
+                        onSelectionModelChange={(newSelection) => setSelectedUsers(newSelection)}
+                        getRowClassName={(params) => 
+                            params.row.status === "Deactivated" ? "deactivated-row" : "" // Apply a class to rows with Deactivated status
+                        }
+                        
+                        sx={{
+                                border: "none",
+                                width: "100%", 
+                        }}
+                        
+                        
+                    />
+                </Box>
+            </Box>
+            {/* Action menu */}
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={() => handleActionClick('Edit profile')}>Edit Profile</MenuItem>
+                <MenuItem onClick={() => handleActionClick('Permissions')}>Permissions</MenuItem>
+                <MenuItem onClick={() => handleActionClick('Deactivate')}>Deactivate</MenuItem>
+            </Menu>
         </Box>
-      );
+    </Box>
+    );
 };
 
 export default UserManager;
