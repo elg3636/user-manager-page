@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid"; // Importing Material UI's DataGrid component for displaying the table
-import { Button, TextField, Box, Menu, MenuItem, IconButton, Chip, Typography } from "@mui/material"; // Importing various Material UI components
+import { Button, TextField, Box, Menu, MenuItem, IconButton, Chip, Typography, Paper } from "@mui/material"; // Importing various Material UI components
 import MoreVertIcon from '@mui/icons-material/MoreVert'; // Importing the "more" vertical icon for the actions menu
 import './styles.css'; // Import the custom CSS for row styling
 
-
+// UserManager component to manage user information and display data in a table
 const UserManager = () => {
     // State variables to manage search input, selected users, and the action menu
     const [search, setSearch] = useState(""); //Store the search input value
@@ -50,7 +50,7 @@ const UserManager = () => {
       // Columns configuration for DataGrid, including custom rendering for "status" and "action"
       const columns = [
         { field: "user", headerName: "User", flex: 1 },
-        { field: "email", headerName: "Email", flex: 1 },
+        { field: "email", headerName: "Email", flex: 2 },
         { 
             field: "status", 
             headerName: "Account Status", 
@@ -73,7 +73,7 @@ const UserManager = () => {
         { 
             field: "clients",
             headerName: "Clients",
-            flex: 1,
+            flex: 3, //column wider for longer client names
             renderCell: (params) => {  // Custom render for the clients column
                 const clients = params.value.split(", ");  // Split client names by comma and space
                 const displayedClients = clients.slice(0, 3);  // Get the first 3 clients
@@ -167,26 +167,40 @@ const UserManager = () => {
         }}>
             
             <Box sx={{ 
-                width: {xs:"90%", sm: "75%", md:"75%"}, 
+                width: {xs:"90%", sm: "85%", md:"85"}, 
                 padding: "20px", 
                 boxSizing:"border-box",
                 display: "flex",
                 flexDirection: "column",
                 gap: 3,
                 justifyContent: "space-between",
-                height: "100%",
+                height: "75vh",
                 backgroundColor: "#FAFAFA",
+                paddingTop: "40px",
+                paddingBottom: "40px",
             }}>
-                <Typography variant ="h4" sx={{ marginBottom: 2, padding: "10px"}}>
+                <Typography 
+                    variant ="h4" 
+                    sx={{ 
+                        marginBottom: 2, 
+                        padding: "10px",
+                        fontFamily: "Roboto, sans-serif",
+                        fontSize: "34px",
+                        fontStyle: "normal",
+                        fontWeight: 400,
+                        letterSpacing: "0.25px",
+                    }}
+                >
                     Manage Users
                 </Typography>
 
-                <Box sx={{ 
+                {/* Paper component used as a container for the content */}
+                <Paper sx={{ 
                     display: "flex", 
                     flexDirection: "column", 
                     gap: 3, 
                     backgroundColor: "#FFFFFF",
-                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", 
+                    elevation: 3, 
                     flexGrow: 1,
                 }}>
 
@@ -239,7 +253,7 @@ const UserManager = () => {
                         
                     />
                 </Box>
-            </Box>
+            </Paper>
             {/* Action menu */}
             <Menu
                 anchorEl={anchorEl}
